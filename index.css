@@ -1,0 +1,9 @@
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 20px;
+}
+
+.data-structure-header {
+  font-size: 30px;
+}

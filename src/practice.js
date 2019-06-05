@@ -103,12 +103,81 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  let node1 = new Node("singleDad")
-  node1.add("tommyBoy")
-  treeContent.append(node1.data)
-  treeContent.append(node1.children[0].data)
+  class Tree {
+    constructor() {
+      this.root = null
+    }
+
+    traverseBF(func) {
+      const arr = [this.root]
+
+      while (arr.length) {
+        // .shift to temporarily take out the first element in arr
+        const node = arr.shift()
+
+        // arr.push(node.children) **WRONG**
+        // arr.push(...node.children) **ANOTHER CORRECT WAY**
+        // cannot push node.children into arr because node.children is already an array
+        // and we don't want a nested array DO WE--?!
+        for (let child of node.children) {
+          arr.push(child)
+        }
+
+        func(node)
+
+        // **********************************************
+        // console.log(node.data);
+        // **********************************************
+      }
+    }
+
+    traverseDF(func) {
+      const arr = [this.root]
+
+      while (arr.length) {
+        // takes out first node in arr
+        const node = arr.shift()
+
+        // adds children of node to the BEGINNING of arr
+        arr.unshift(...node.children)
+
+        func(node)
+      }
+    }
+  }
+
+  let node1 = new Node("Single Dad Danny")
+  const tree = new Tree()
+  tree.root = node1
+
+  node1.add("Tommy Boy")
+  node1.add("Billy Bob")
+
+  let child1 = node1.children.filter(child => {
+    return child.data === "Tommy Boy"
+  })
+
+
+  child1[0].add("Sally")
+  child1[0].add("Molly")
+
+  function addYeahhh(node) {
+    return node.data + " YEAHHH!!!"
+  }
+
+  tree.traverseBF(addYeahhh)
+
+
+  treeContent.innerHTML += `
+  <p>${node1.data}</p>
+  <p>${node1.children[0].data}</p>
+  <p>${node1.children[1].data}</p>
+  <p>${child1[0].children[0].data}</p>
+  <p>${child1[0].children[1].data}</p>
+  `
 
 // ------------------------------------------------
+
 })
 
 
